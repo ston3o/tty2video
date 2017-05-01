@@ -1,0 +1,19 @@
+#!/bin/bash
+
+command -v ttygif > /dev/null 2>&1 || (echo "ttygif is not available please install" && exit 1)
+command -v ffmpeg > /dev/null 2>&1 || (echo "ffmpeg is not available please install" && exit 2)
+\rm -r /tmp/ttygif.* > /dev/null 2>&1
+
+if [ ! -e "$1" ]; then
+    echo -e "usage: $0 [ttyrecord]"
+    exit 1
+fi
+
+record=$1
+ttygif $record
+
+if [ -e tty.gif ]; then
+    ffmpeg -f gif -i tty.gif tty.mp4
+fi
+
+\rm tty.gif
